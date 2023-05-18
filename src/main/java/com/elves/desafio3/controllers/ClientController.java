@@ -4,6 +4,8 @@ import com.elves.desafio3.dto.ClientDTO;
 import com.elves.desafio3.services.ClientService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -19,8 +21,8 @@ public class ClientController {
     ClientService service;
 
     @RequestMapping
-    public ResponseEntity<List<ClientDTO>>  findAll(){
-        return ResponseEntity.ok().body(service.findAll());
+    public ResponseEntity<Page<ClientDTO>>  findAll(Pageable pageable){
+        return ResponseEntity.ok().body(service.findAll(pageable));
     }
 
     @RequestMapping(value = "/{id}")

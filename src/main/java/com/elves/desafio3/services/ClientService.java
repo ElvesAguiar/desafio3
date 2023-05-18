@@ -6,11 +6,11 @@ import com.elves.desafio3.exceptions.DomainException;
 import com.elves.desafio3.resources.ClientResource;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 
@@ -22,50 +22,39 @@ public class ClientService {
     ClientResource resource;
 
     @Transactional(readOnly = true)
-    public List<ClientDTO> findAll(){
+    public Page<ClientDTO> findAll(Pageable pageable){
 
-        List<Client> list = resource.findAll();
-        List<ClientDTO> result= list.stream().map( x -> new ClientDTO(x)).toList();
+        Page<Client> list = resource.findAll(pageable);
 
-        return result;
+        return list.map(x -> new ClientDTO(x));
 
     }
 
     @Transactional(readOnly = true)
     public ClientDTO findById(Long id){
-    try {
-        return new ClientDTO(resource.findById(id).get());
-    }catch (NoSuchElementException e)   {
-        throw new DomainException("Id não encontrado");
-    }
+        try {
+            return new ClientDTO(resource.findById(id).get());
+        }catch (NoSuchElementException e)   {
+            throw new DomainException("Id não encontrado");
+        }
 
     }
 
     @Transactional
-    public ClientDTO insert(ClientDTO client){
+    public ClientDTO insert(ClientDTO dto){
 
         Client entity = new Client();
-        entity.setId(client.getId());
-        entity.setName(client.getName());
-        entity.setCpf(client.getCpf());
-        entity.setBirthDate(client.getBirthDate());
-        entity.setIncome(client.getIncome());
-        entity.setChildren(client.getChildren());
+        entity.setId(dto.getId());
+        copyDtoToEntity(dto, entity);
 
         return new ClientDTO(resource.save(entity));
     }
     @Transactional
-    public ClientDTO update(ClientDTO client, Long id){
+    public ClientDTO update(ClientDTO dto, Long id){
 
         try {
-
             Client entity = resource.getReferenceById(id);
-
-            entity.setName(client.getName());
-            entity.setCpf(client.getCpf());
-            entity.setBirthDate(client.getBirthDate());
-            entity.setIncome(client.getIncome());
-            entity.setChildren(client.getChildren());
+            copyDtoToEntity(dto, entity);
 
             return new ClientDTO(resource.save(entity));
 
@@ -88,6 +77,14 @@ public class ClientService {
         }catch (NoSuchElementException e){
             throw new DomainException("Id não encontrado");
         }
+    }
+
+    private void copyDtoToEntity(ClientDTO dto, Client entity) {
+        entity.setName(dto.getName());
+        entity.setCpf(dto.getCpf());
+        entity.setBirthDate(dto.getBirthDate());
+        entity.setIncome(dto.getIncome());
+        entity.setChildren(dto.getChildren());
     }
 
 }
