@@ -1,8 +1,8 @@
 package com.elves.desafio3.controllers;
 
 import com.elves.desafio3.dto.ClientDTO;
-import com.elves.desafio3.entities.Client;
 import com.elves.desafio3.services.ClientService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,13 +30,13 @@ public class ClientController {
 
     @PostMapping
 
-    public ResponseEntity<ClientDTO> insert(@RequestBody ClientDTO entity) {
+    public ResponseEntity<ClientDTO> insert(@Valid @RequestBody ClientDTO entity) {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(entity.getId()).toUri();
         return ResponseEntity.created(uri).body(service.insert(entity));
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ClientDTO> update(@RequestBody ClientDTO entity, @PathVariable Long id){
+    public ResponseEntity<ClientDTO> update(@Valid @RequestBody ClientDTO entity, @PathVariable Long id){
         return ResponseEntity.ok().body(service.update(entity, id));
     }
 
