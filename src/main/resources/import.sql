@@ -1,4 +1,4 @@
-INSERT INTO tb_client  (birth_date, children , cpf , income, name) VALUES ('1985-09-15', 2, '32145685265', 1500.0 , 'Jung cook' );
+INSERT INTO tb_client  (birth_date, children , cpf , income, name) VALUES ('1985-09-15', 2, '32145685265', 1500.0 , 'Jung Kook' );
 
 INSERT INTO tb_client  (birth_date, children , cpf , income, name) VALUES ('1996-10-03', 1, '32145685265', 1700.0 , 'Takakara Nomuru' );
 

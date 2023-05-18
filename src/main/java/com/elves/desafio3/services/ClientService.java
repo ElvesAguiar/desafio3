@@ -4,6 +4,7 @@ import com.elves.desafio3.dto.ClientDTO;
 import com.elves.desafio3.entities.Client;
 import com.elves.desafio3.exceptions.DomainException;
 import com.elves.desafio3.resources.ClientResource;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
@@ -60,9 +61,9 @@ public class ClientService {
 
         }catch (NoSuchElementException e){
             throw new DomainException("Id não encontrado");
+        }catch (EntityNotFoundException e2){
+            throw new DomainException("Id não encontrado");
         }
-
-
     }
 
     @Transactional
