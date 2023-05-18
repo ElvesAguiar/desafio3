@@ -27,12 +27,12 @@ public class ClientController {
 
     @PostMapping
 
-    public ClientDTO insert(@RequestBody Client entity) {
+    public ClientDTO insert(@RequestBody ClientDTO entity) {
         return service.insert(entity);
     }
 
     @PutMapping(value = "/{id}")
-    public ClientDTO update(@RequestBody Client entity, @PathVariable Long id){
+    public ClientDTO update(@RequestBody ClientDTO entity, @PathVariable Long id){
         return service.update(entity, id);
     }
 
