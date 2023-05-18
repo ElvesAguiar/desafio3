@@ -51,7 +51,7 @@ public class ClientService {
         entity.setBirthDate(client.getBirthDate());
         entity.setIncome(client.getIncome());
         entity.setChildren(client.getChildren());
-        
+
         return new ClientDTO(resource.save(entity));
     }
     @Transactional
