@@ -1,5 +1,6 @@
 package com.elves.desafio3.services;
 
+import com.elves.desafio3.dto.ClientDTO;
 import com.elves.desafio3.entities.Client;
 import com.elves.desafio3.resources.ClientResource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -18,22 +20,26 @@ public class ClientService {
     ClientResource resource;
 
     @Transactional(readOnly = true)
-    public List<Client> findAll(){
-        return resource.findAll();
+    public List<ClientDTO> findAll(){
+        List<Client> list = resource.findAll();
+        List<ClientDTO> result= list.stream().map( x -> new ClientDTO(x)).toList();
+
+        return result;
+
     }
 
     @Transactional(readOnly = true)
-    public Client findById(Long id){
-        return resource.findById(id).get();
+    public ClientDTO findById(Long id){
+        return new ClientDTO(resource.findById(id).get());
     }
 
     @Transactional
-    public Client insert(Client client){
-        return client= resource.save(client);
+    public ClientDTO insert(Client client){
+        return new ClientDTO(client= resource.save(client));
     }
 
     @Transactional
-    public Client update(Client client, Long id){
+    public ClientDTO update(Client client, Long id){
 
         Client entity = resource.getReferenceById(id);
 
@@ -43,7 +49,7 @@ public class ClientService {
         entity.setIncome(client.getIncome());
         entity.setChildren(client.getChildren());
 
-        return resource.save(entity);
+        return new ClientDTO(resource.save(entity));
     }
 
     @Transactional
